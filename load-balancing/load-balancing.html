@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Load Balancing Algorithms</title>
+<style>body{font-family:system-ui,sans-serif;background:#0f172a;color:#e2e8f0;padding:2rem;max-width:800px;margin:0 auto}
+h1{font-size:1.8rem;margin-bottom:0.5rem}.sub{color:#64748b;margin-bottom:2rem}
+.card{background:#1e293b;border-radius:12px;padding:1.5rem;margin-bottom:1rem;border-left:3px solid #6366f1}
+.card h3{color:#818cf8;margin-bottom:0.5rem}.card p{color:#94a3b8;line-height:1.6}
+.badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:0.75rem;margin-right:4px}
+.badge.green{background:rgba(52,211,153,0.15);color:#34d399}
+.badge.yellow{background:rgba(251,191,36,0.15);color:#fbbf24}
+.badge.blue{background:rgba(99,102,241,0.15);color:#818cf8}
+.footer{text-align:center;color:#475569;font-size:0.75rem;margin-top:2rem;padding-top:1rem;border-top:1px solid #1e293b}
+</style></head><body>
+<h1>⚖️ Load Balancing Algorithms</h1>
+<p class="sub">System Design · How requests get distributed across servers</p>
+<div class="card"><h3>🔄 Round Robin</h3><p>Requests go to each server in turn: A→B→C→A→B→C. Simple, but no awareness of server load.<br><span class="badge green">Simple</span><span class="badge yellow">No load awareness</span></p></div>
+<div class="card"><h3>🎯 Least Connections</h3><p>Send to the server with fewest active connections. Adapts to varying workload durations.<br><span class="badge green">Adaptive</span><span class="badge blue">Good for long-lived connections</span></p></div>
+<div class="card"><h3>⏱️ Least Response Time</h3><p>Route to the fastest recent responder. Picks least busy AND fastest server.<br><span class="badge green">Fastest</span><span class="badge yellow">Needs monitoring</span></p></div>
+<div class="card"><h3>🧮 IP Hash</h3><p>Hash client IP → same client hits same server. Session affinity without sticky cookies.<br><span class="badge green">Sticky sessions</span><span class="badge yellow">Uneven if IPs cluster</span></p></div>
+<div class="footer">⚡ Micro-action: Check what LB algorithm your current infra uses.</div>
+</body></html>
