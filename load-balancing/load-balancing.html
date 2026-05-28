@@ -1,21 +1,101 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Load Balancing Algorithms</title>
-<style>body{font-family:system-ui,sans-serif;background:#0f172a;color:#e2e8f0;padding:2rem;max-width:800px;margin:0 auto}
-h1{font-size:1.8rem;margin-bottom:0.5rem}.sub{color:#64748b;margin-bottom:2rem}
-.card{background:#1e293b;border-radius:12px;padding:1.5rem;margin-bottom:1rem;border-left:3px solid #6366f1}
-.card h3{color:#818cf8;margin-bottom:0.5rem}.card p{color:#94a3b8;line-height:1.6}
-.badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:0.75rem;margin-right:4px}
-.badge.green{background:rgba(52,211,153,0.15);color:#34d399}
-.badge.yellow{background:rgba(251,191,36,0.15);color:#fbbf24}
-.badge.blue{background:rgba(99,102,241,0.15);color:#818cf8}
-.footer{text-align:center;color:#475569;font-size:0.75rem;margin-top:2rem;padding-top:1rem;border-top:1px solid #1e293b}
-</style></head><body>
-<h1>⚖️ Load Balancing Algorithms</h1>
-<p class="sub">System Design · How requests get distributed across servers</p>
-<div class="card"><h3>🔄 Round Robin</h3><p>Requests go to each server in turn: A→B→C→A→B→C. Simple, but no awareness of server load.<br><span class="badge green">Simple</span><span class="badge yellow">No load awareness</span></p></div>
-<div class="card"><h3>🎯 Least Connections</h3><p>Send to the server with fewest active connections. Adapts to varying workload durations.<br><span class="badge green">Adaptive</span><span class="badge blue">Good for long-lived connections</span></p></div>
-<div class="card"><h3>⏱️ Least Response Time</h3><p>Route to the fastest recent responder. Picks least busy AND fastest server.<br><span class="badge green">Fastest</span><span class="badge yellow">Needs monitoring</span></p></div>
-<div class="card"><h3>🧮 IP Hash</h3><p>Hash client IP → same client hits same server. Session affinity without sticky cookies.<br><span class="badge green">Sticky sessions</span><span class="badge yellow">Uneven if IPs cluster</span></p></div>
-<div class="footer">⚡ Micro-action: Check what LB algorithm your current infra uses.</div>
-</body></html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Load Balancing Algorithms — ELI5 → Technical</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Nunito', sans-serif; background: #0f0f1a; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .card { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 24px; padding: 35px; max-width: 680px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+  h1 { font-size: 26px; font-weight: 800; color: white; margin-bottom: 4px; display: flex; align-items: center; gap: 10px; }
+  h1 span { font-size: 30px; }
+  .subtitle { color: #8888aa; font-size: 14px; margin-bottom: 24px; }
+  .eli5-box { background: linear-gradient(135deg, #1a2a3e, #1e2d44); border: 2px solid #3a6a9a; border-radius: 16px; padding: 20px; margin-bottom: 20px; position: relative; }
+  .eli5-tag { position: absolute; top: -12px; left: 16px; background: #3a6a9a; color: white; font-size: 11px; font-weight: 700; padding: 2px 12px; border-radius: 10px; letter-spacing: 1px; }
+  .eli5-content { margin-top: 4px; font-size: 15px; line-height: 1.6; color: #c0d0e8; }
+  .eli5-content strong { color: #80bfff; }
+  .bridge { text-align: center; color: #555577; font-size: 13px; margin: -8px 0 16px; font-style: italic; }
+  .tech-box { background: rgba(0,0,0,0.2); border: 1px solid #2a2a4a; border-radius: 16px; padding: 20px; margin-bottom: 20px; }
+  .tech-tag { font-size: 11px; font-weight: 700; color: #8888cc; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .tech-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .tech-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 14px; }
+  .tech-item .icon { font-size: 24px; margin-bottom: 4px; }
+  .tech-item h4 { font-size: 14px; font-weight: 700; color: #d0d0ff; margin-bottom: 4px; }
+  .tech-item p { font-size: 13px; line-height: 1.5; color: #9999bb; }
+  .tech-item code { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #ffd700; background: rgba(255,215,0,0.08); padding: 1px 6px; border-radius: 4px; }
+  .action-bar { background: rgba(50, 200, 120, 0.08); border: 1px solid rgba(50, 200, 120, 0.2); border-radius: 12px; padding: 14px 20px; display: flex; align-items: center; gap: 10px; }
+  .action-bar span:first-child { font-size: 20px; }
+  .action-bar p { font-size: 14px; color: #a0e0c0; }
+  .action-bar strong { color: #32c878; }
+  .footer { text-align: center; color: #444466; font-size: 12px; margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.05); }
+  @media (max-width: 550px) { .tech-grid { grid-template-columns: 1fr; } .card { padding: 20px; } }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1><span>⚖️</span> Load Balancing Algorithms</h1>
+  <div class="subtitle">System Design — Like you're 5, then like you're an engineer</div>
+
+  <div class="eli5-box">
+    <div class="eli5-tag">🧒 LIKE YOU'RE 5</div>
+    <div class="eli5-content">
+      Imagine a <strong>busy food court</strong> with 4 counters and 1 long queue. You need a system to decide which counter each person goes to:<br><br>
+      🪑 <strong>Round Robin —</strong> "Next!" The host sends person #1 to Counter A, #2 to B, #3 to C, #4 to D, #5 back to A. Fair rotation, but if Counter A's cook is slow, that queue builds up.<br><br>
+      🎯 <strong>Least Connections —</strong> Look at which counter has the <em>shortest line right now</em> and send the next person there. Adapts to slow cooks automatically.<br><br>
+      ⏱️ <strong>Least Response Time —</strong> Same as above, but also factor in "which counter served the last person fastest?" The food court manager keeps a stopwatch.<br><br>
+      🔒 <strong>IP Hash —</strong> "You always go to Counter A because your birthday is in January." Same person, same counter every time — so the cook remembers your order.<br><br>
+      <strong>The big idea:</strong> Without a good system, one counter is crushed while three are idle. A load balancer is just a <strong>smart host</strong> making sure everyone gets fed fairly.
+    </div>
+  </div>
+
+  <div class="bridge">↓ Now let's call it what it really is ↓</div>
+
+  <div class="tech-box">
+    <div class="tech-tag">🔧 FOR THE ENGINEER</div>
+    <div class="tech-grid">
+      <div class="tech-item">
+        <div class="icon">🔄</div>
+        <h4>Round Robin</h4>
+        <p>Requests distributed in circular order: <code>A → B → C → A → B → C</code>.<br><br><strong>Pros:</strong> Simple, no state needed.<br><strong>Cons:</strong> No awareness of server load. Bad for heterogeneous servers.<br><br><strong>Weighted variant:</strong> Servers with more capacity get more requests (<code>weight=3</code> vs <code>weight=1</code>).</p>
+      </div>
+      <div class="tech-item">
+        <div class="icon">🎯</div>
+        <h4>Least Connections</h4>
+        <p>Route to server with fewest active connections.<br><br><strong>Pros:</strong> Adapts to varying request durations.<br><strong>Cons:</strong> Needs connection tracking state on LB.<br><br>Nginx: <code>upstream backend { least_conn; ... }</code><br>HAProxy: <code>balance leastconn</code></p>
+      </div>
+      <div class="tech-item">
+        <div class="icon">⏱️</div>
+        <h4>Least Response Time</h4>
+        <p>Route to server with lowest avg response time + fewest active connections.<br><br><strong>Pros:</strong> Picks both least busy AND fastest server.<br><strong>Cons:</strong> Needs monitoring overhead.<br><br>HAProxy: <code>balance first</code> picks first available. AWS ALB uses <code>least outstanding requests</code> (LOR).</p>
+      </div>
+      <div class="tech-item">
+        <div class="icon">🧮</div>
+        <h4>IP Hash / Sticky Sessions</h4>
+        <p>Hash client IP → same client → same server.<br><br><code>hash = crc32(client_ip) % server_count</code><br><br><strong>Use case:</strong> Session persistence without cookies. Great for in-memory sessions.<br><strong>Downside:</strong> Uneven distribution if client IPs cluster (corporate NAT).<br><br>Nginx: <code>ip_hash;</code> directive.</p>
+      </div>
+      <div class="tech-item">
+        <div class="icon">📊</div>
+        <h4>L4 vs L7 Load Balancing</h4>
+        <p><strong>Layer 4 (TCP):</strong> NAT-based. Fast, sees IP+port only.<br><strong>Layer 7 (HTTP):</strong> Reads headers, cookies, paths. Can do intelligent routing (<code>/api/*</code> → backend A, <code>/static/*</code> → backend B).<br><br><strong>Health checks:</strong> LB pings servers periodically. Unhealthy servers removed from pool.</p>
+      </div>
+      <div class="tech-item">
+        <div class="icon">🏭</div>
+        <h4>Real-World Tools</h4>
+        <p><strong>NGINX:</strong> Layer 7, great for HTTP APIs<br><strong>HAProxy:</strong> TCP + HTTP, battle-tested<br><strong>AWS ALB:</strong> Managed L7, path/host-based routing<br><strong>K8s Service:</strong> iptables-based round robin by default<br><strong>Envoy:</strong> Modern proxy, advanced LB + circuit breaking</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-bar">
+    <span>⚡</span>
+    <p><strong>Micro-action:</strong> Check what LB algorithm your current infrastructure uses. Run <code>kubectl describe svc &lt;your-service&gt;</code> — K8s default is round robin via iptables/IPVS.</p>
+  </div>
+
+  <div class="footer">
+    System Design · Load Balancing &nbsp;|&nbsp; 💫 Small steps. Every day.
+  </div>
+</div>
+</body>
+</html>

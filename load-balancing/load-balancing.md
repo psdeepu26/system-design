@@ -1,38 +1,51 @@
 # ⚖️ Load Balancing Algorithms
 
-**System Design** · How requests get distributed across servers
+## 🧒 Like You're 5
+
+Imagine a **busy food court** with 4 counters and 1 long queue. You need a system to decide which counter each person goes to:
+
+- **🔄 Round Robin** — "Next!" Person #1 → Counter A, #2 → B, #3 → C, #4 → D, #5 back to A. Fair rotation, but if Counter A's cook is slow, that queue builds up.
+- **🎯 Least Connections** — Look at which counter has the shortest line and send the next person there.
+- **⏱️ Least Response Time** — Same as above, plus factor in which counter served fastest.
+- **🔒 IP Hash** — Same person, same counter every time so the cook remembers your order.
+
+> **The big idea:** Without a good system, one counter is crushed while three are idle. A load balancer is just a **smart host** making sure everyone gets served fairly.
 
 ---
 
-### 🔄 Round Robin
-Requests go to each server in turn: A → B → C → A → B → C...
-- ✅ Simple, predictable
-- ❌ No awareness of server load or health
+## 🔧 For the Engineer
 
-### 🎯 Least Connections
-Send request to the server with the fewest active connections.
-- ✅ Adapts to varying workloads
-- ✅ Good for long-lived connections
+### Round Robin
+Requests in circular order: `A → B → C → A → B → C`. Simple, stateless. **Weighted variant:** servers with more capacity get more requests.
 
-### ⏱️ Least Response Time
-Route to the server with the fastest recent response time.
-- ✅ Picks the fastest + least loaded
-- ❌ Requires continuous monitoring
+### Least Connections
+Route to server with fewest active connections. Adapts to varying request durations.
+- Nginx: `upstream backend { least_conn; ... }`
+- HAProxy: `balance leastconn`
 
-### 🧮 IP Hash
-Hash the client IP → same client always hits the same server.
-- ✅ Built-in session affinity
-- ❌ Uneven if IPs cluster behind NAT
+### Least Response Time
+Route to server with lowest avg response time + fewest active connections.
+- AWS ALB: "least outstanding requests" (LOR)
+- HAProxy: `balance first`
+
+### IP Hash / Sticky Sessions
+`hash = crc32(client_ip) % server_count` — same client → same server.
+- Nginx: `ip_hash;`
+- Best for in-memory sessions without cookies
+
+### Layer 4 vs Layer 7
+| Type | Sees | Speed |
+|------|------|-------|
+| L4 (TCP) | IP + port only | Fast |
+| L7 (HTTP) | Headers, cookies, paths | Slower but smarter |
+
+### Real-World Tools
+- **NGINX** — Layer 7, great for HTTP APIs
+- **HAProxy** — TCP + HTTP, battle-tested
+- **AWS ALB** — Managed L7, path/host-based routing
+- **K8s Service** — iptables round robin by default
+- **Envoy** — Advanced LB + circuit breaking
 
 ---
 
-| Algorithm | Best For | Downside |
-|-----------|----------|----------|
-| Round Robin | Identical servers | No load awareness |
-| Least Connections | Variable request duration | More bookkeeping |
-| Least Response Time | Mixed performance | Monitoring overhead |
-| IP Hash | Session affinity | Uneven distribution |
-
----
-
-⚡ **Micro-action:** Check what LB algorithm your current infra uses.
+⚡ **Micro-action:** Run `kubectl describe svc <your-service>` to see what LB algorithm your K8s cluster uses.
