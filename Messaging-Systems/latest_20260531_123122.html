@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event-Driven Architecture with Kafka</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #1a1a1a;
+            --text: #e0e0e0;
+            --card-bg: #252525;
+            --accent: #0070f3;
+            --border: #333;
+            --grid-bg: #2a2a2a;
+            --grid-accent: #42d1ff;
+        }
+        
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 32px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .emoji {
+            font-size: 28px;
+            margin-right: 12px;
+        }
+        
+        .meta {
+            color: #8c8c8c;
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: 400;
+        }
+        
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 24px 0;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 20px 0 12px 0;
+            color: var(--grid-accent);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--grid-accent);
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .tech-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 16px;
+            background: var(--grid-bg);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid var(--border);
+            margin: 16px 0;
+        }
+        
+        .term {
+            font-weight: 600;
+            color: var(--grid-accent);
+        }
+        
+        .micro-action {
+            background: rgba(66, 209, 255, 0.1);
+            border-left: 3px solid var(--grid-accent);
+            padding: 12px 16px;
+            margin: 16px 0;
+            border-radius: 0 8px 8px 0;
+            font-weight: 500;
+        }
+        
+        code {
+            background: #333;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: #333;
+            padding: 12px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 12px 0;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header">
+            <span class="emoji">🚀</span>
+            <h1>Event-Driven Architecture with Kafka</h1>
+        </div>
+        
+        <div class="meta">System Design · Day #7 · Sunday, June 1, 2026</div>
+        
+        <div class="divider"></div>
+        
+        <div class="section-title">🧒 Like You're 5</div>
+        <p>Imagine you've got a bunch of friends in a big treehouse, and you want to pass messages between each other. But instead of yelling across the treehouse, you use little notes that you put in a bucket on a pulley system. When someone drops a note in, it goes to everyone who's connected to that pulley line.</p>
+        
+        <p>Kafka is like that pulley system for computers. When one service does something important (like a user buys something), it drops a 'note' (an event) into a 'bucket' (a topic). Other services that care about those events (like sending a confirmation email or updating inventory) can listen for those notes and react when they arrive.</p>
+        
+        <p>The best part? The service dropping the note doesn't have to wait around to see who gets it - it just drops the note and keeps going with its day!</p>
+        
+        <div class="divider"></div>
+        
+        <div class="section-title">🔧 For the Engineer</div>
+        <div class="tech-grid">
+            <div class="term">Producers & Consumers</div>
+            <div>Services that create (produce) events and services that process (consume) them. Producers send to topics, consumers read from them. Decouples services completely.</div>
+            
+            <div class="term">Topics & Partitions</div>
+            <div>Topics are categories for events (e.g., 'user-purchases'). Partitions allow topics to be split across multiple servers for scalability. Each message goes to one partition within a topic.</div>
+            
+            <div class="term">Consumer Groups</div>
+            <div>Multiple consumer instances can form a group to share the load of processing a topic. Kafka ensures each message is delivered to just one consumer in the group.</div>
+            
+            <div class="term">Message Retention</div>
+            <div>Kafka retains messages for a configurable time (default 7 days). Consumers can re-read messages or catch up from where they left off after downtime.</div>
+            
+            <div class="term">Your Stack</div>
+            <div>Use Kafka with Hermes for real-time event processing. Deploy Kafka Connect for data integration with databases, and ksqlDB for stream processing. Monitoring via Prometheus and Grafana for consumer lag and throughput.</div>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <div class="section-title">💡 Why Event-Driven Matters</div>
+        <p>Traditional systems use request-response ("Do this now and tell me what happened"). Event-driven systems say "Something happened" and let others decide what to do.</p>
+        
+        <p>This makes systems more scalable (services don't block waiting for responses), more resilient (if a service goes down, events wait in Kafka until it comes back), and more flexible (you can add new services that react to events without changing existing ones).</p>
+        
+        <p>For your work with NVCF and large-scale systems, this allows you to break down monolithic operations into focused, independent services that communicate through events.</p>
+        
+        <div class="micro-action">
+            ⚡ <strong>Micro-action:</strong> Check your current project - identify one synchronous operation that could become an event. Sketch how a producer would generate the event and what consumers would process it.
+        </div>
+    </div>
+</body>
+</html>
