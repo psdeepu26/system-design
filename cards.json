@@ -1,10 +1,57 @@
 [
-{"file":"Messaging-Systems/latest_20260531_123122.html","category":"Messaging-Systems","title":"Event-Driven Architecture with Kafka","emoji":"📚"},
-{"file":"consistent-hashing:-the-magic-ring-that-never-breaks/consistent-hashing-magic-ring_20260608.html","category":"consistent-hashing:-the-magic-ring-that-never-breaks","title":"Consistent Hashing: The Magic Ring That Never Breaks","emoji":"📚"},
-{"file":"load-balancing/load-balancing.html","category":"load-balancing","title":"Load Balancing Algorithms — ELI5 → Technical","emoji":"📚"},
-{"file":"performance/tail-latency-p99_20260720.html","category":"performance","title":"Tail Latency: Why the Slowest 1% Shapes the Whole System","emoji":"📚"},
-{"file":"system-design/backpressure-slow-down_20260629.html","category":"system-design","title":"Backpressure: The Art of Saying \"Slow Down\"","emoji":"📚"},
-{"file":"system-design/circuit-breaker-pattern_20260622.html","category":"system-design","title":"Circuit Breaker Pattern — Nightly Insight 2026-06-22","emoji":"📚"},
-{"file":"system-design/circuit-breakers-safety-valve_20260622.html","category":"system-design","title":"Circuit Breakers: The Safety Valve for Distributed Systems","emoji":"📚"},
-{"file":"system-design/consistent-hashing-magic-ring_20260608.html","category":"system-design","title":"Consistent Hashing: The Magic Ring That Never Breaks","emoji":"📚"}
+  {
+    "file": "resilience/load-shedding-protect-the-core_20260720.html",
+    "category": "resilience",
+    "title": "load-shedding-protect-the-core 20260720",
+    "emoji": "📚",
+    "timestamp": "20260719_203800"
+  },
+  {
+    "file": "system-design/consistent-hashing-magic-ring_20260608.html",
+    "category": "system-design",
+    "title": "Consistent Hashing: The Magic Ring That Never Breaks",
+    "emoji": "📚"
+  },
+  {
+    "file": "system-design/circuit-breakers-safety-valve_20260622.html",
+    "category": "system-design",
+    "title": "Circuit Breakers: The Safety Valve for Distributed Systems",
+    "emoji": "📚"
+  },
+  {
+    "file": "system-design/circuit-breaker-pattern_20260622.html",
+    "category": "system-design",
+    "title": "Circuit Breaker Pattern — Nightly Insight 2026-06-22",
+    "emoji": "📚"
+  },
+  {
+    "file": "system-design/backpressure-slow-down_20260629.html",
+    "category": "system-design",
+    "title": "Backpressure: The Art of Saying \"Slow Down\"",
+    "emoji": "📚"
+  },
+  {
+    "file": "performance/tail-latency-p99_20260720.html",
+    "category": "performance",
+    "title": "Tail Latency: Why the Slowest 1% Shapes the Whole System",
+    "emoji": "📚"
+  },
+  {
+    "file": "load-balancing/load-balancing.html",
+    "category": "load-balancing",
+    "title": "Load Balancing Algorithms — ELI5 → Technical",
+    "emoji": "📚"
+  },
+  {
+    "file": "consistent-hashing:-the-magic-ring-that-never-breaks/consistent-hashing-magic-ring_20260608.html",
+    "category": "consistent-hashing:-the-magic-ring-that-never-breaks",
+    "title": "Consistent Hashing: The Magic Ring That Never Breaks",
+    "emoji": "📚"
+  },
+  {
+    "file": "Messaging-Systems/latest_20260531_123122.html",
+    "category": "Messaging-Systems",
+    "title": "Event-Driven Architecture with Kafka",
+    "emoji": "📚"
+  }
 ]
