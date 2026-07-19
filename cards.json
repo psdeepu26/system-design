@@ -1,5 +1,12 @@
 [
   {
+    "file": "performance/tail-latency-p99_20260720.html",
+    "category": "performance",
+    "title": "tail-latency-p99 20260720",
+    "emoji": "📚",
+    "timestamp": "20260719_203211"
+  },
+  {
     "file": "system-design/backpressure-slow-down_20260629.html",
     "category": "system-design",
     "title": "backpressure-slow-down 20260629",
